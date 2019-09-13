@@ -22,6 +22,8 @@ src/**/*.js
 *.launch
 .settings/
 *.sublime-workspace
+/.history
+/.vscode
 
 # IDE - VSCode
 .vscode/*

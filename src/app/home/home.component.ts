@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ElectronService } from '../core/services';
+import { from } from 'rxjs';
+import { ConfigService } from '../config/config.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +10,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  public yggdrasilConfig: any;
+
+  constructor(public configService: ConfigService) { }
 
   ngOnInit() {
+   this.configService.loadYggdrasilConfig();
   }
-
 }

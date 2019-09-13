@@ -1,7 +1,7 @@
 {
-  "name": "angular-electron",
+  "name": "yggdrasil-desktop-client",
   "version": "6.1.0",
-  "description": "Angular 8 with Electron (Typescript + SASS + Hot Reload)",
+  "description": "Yggdrasil network client",
   "homepage": "https://github.com/maximegris/angular-electron",
   "author": {
     "name": "Maxime GRIS",
@@ -83,5 +83,12 @@
   },
   "engines": {
     "node": ">=10.9.0"
+  },
+  "dependencies": {
+    "@angular/animations": "^8.2.6",
+    "@angular/cdk": "^8.2.0",
+    "@angular/material": "^8.2.0",
+    "class-transformer": "^0.2.3",
+    "reflect-metadata": "^0.1.13"
   }
 }

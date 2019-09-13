@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { ipcRenderer, webFrame, remote } from 'electron';
 import * as childProcess from 'child_process';
 import * as fs from 'fs';
+import * as os from 'os';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +16,14 @@ export class ElectronService {
   remote: typeof remote;
   childProcess: typeof childProcess;
   fs: typeof fs;
+  os: typeof os;
 
   get isElectron() {
     return window && window.process && window.process.type;
+  }
+
+  get platform(): NodeJS.Platform {
+    return os.platform();
   }
 
   constructor() {
