@@ -1,21 +1,28 @@
 .container {
-  height: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: url(../../assets/background.jpg) no-repeat center fixed;
-  -webkit-background-size: cover; /* pour anciens Chrome et Safari */
-  background-size: cover; /* version standardisée */
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 
   .title {
-    color: white;
+    color: black;
     margin: 0;
     padding: 50px 20px;
   }
 
   .config {
     width: 100%;
-    color: aliceblue;
+    color: black;
+  }
+
+  mat-sidenav {
+    width: 200px;
+  }
+
+  .sidenav-container {
+    height: 100%;
   }
 }

@@ -43,8 +43,16 @@ export class ConfigService {
     );
   }
 
+  saveYggdrasilConfig() {
+    from(this.saveFilePromise(this.config.configPath, this.yggdrasilConfig)).subscribe();
+  }
+
   get yggdrasilConfig(): YggdrasilConfig {
     return this._yggdrasilConfig$.getValue();
+  }
+
+  set yggdrasilConfig(config: YggdrasilConfig) {
+    this._yggdrasilConfig$.next(config);
   }
 
   get yggdrasilConfig$(): Observable<YggdrasilConfig> {
@@ -70,6 +78,17 @@ export class ConfigService {
           return reject(err);
         }
         resolve(data);
+      });
+    });
+  }
+
+  private saveFilePromise(fileName: string, data): Promise<Buffer> {
+    return new Promise((resolve, reject) => {
+      this.electronService.fs.writeFile(fileName, data, (err) => {
+        if (err !== null) {
+          return reject(err);
+        }
+        resolve();
       });
     });
   }
