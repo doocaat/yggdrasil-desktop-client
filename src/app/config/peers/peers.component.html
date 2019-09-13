@@ -1,0 +1,9 @@
+<div class="container">
+  <h3>Peers</h3>
+  <button mat-button (click)="addPeer('')">Add</button>
+  <div *ngFor="let peer of peers.controls; let i = index">
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Peer address" [formControlName]="i" />
+    </mat-form-field>
+  </div>
+</div>

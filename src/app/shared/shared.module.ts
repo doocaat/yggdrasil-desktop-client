@@ -1,18 +1,23 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {
   MatDividerModule,
   MatToolbarModule,
   MatSidenavModule,
   MatListModule,
   MatIconModule,
-  MatButtonModule
-} from "@angular/material";
+  MatButtonModule,
+  MatFormFieldModule,
+  MatOptionModule,
+  MatSelectModule,
+  MatInputModule
+} from '@angular/material';
 
-import { TranslateModule } from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 
-import { PageNotFoundComponent } from "./components/";
-import { WebviewDirective } from "./directives/";
+import { PageNotFoundComponent } from './components/';
+import { WebviewDirective } from './directives/';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [PageNotFoundComponent, WebviewDirective],
@@ -25,6 +30,11 @@ import { WebviewDirective } from "./directives/";
     MatListModule,
     MatIconModule,
     MatButtonModule,
+    MatFormFieldModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatInputModule,
+    ReactiveFormsModule
   ],
   exports: [
     TranslateModule,
@@ -34,7 +44,12 @@ import { WebviewDirective } from "./directives/";
     MatSidenavModule,
     MatListModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatFormFieldModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatInputModule,
+    ReactiveFormsModule
   ]
 })
 export class SharedModule {}

@@ -1,16 +1,15 @@
 {
   "name": "yggdrasil-desktop-client",
-  "version": "6.1.0",
+  "version": "1.0.0",
   "description": "Yggdrasil network client",
-  "homepage": "https://github.com/maximegris/angular-electron",
   "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
+    "name": "Duc@t",
+    "email": "mr_nonamed@protonmail.com"
   },
   "keywords": [
-    "angular",
-    "angular 8",
-    "electron",
+    "yggdrasil",
+    "end-to-end",
+    "network",
     "typescript",
     "sass"
   ],

@@ -1,20 +1,5 @@
 <div class="container">
-  <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav [opened]="true" [mode]="'side'" #snav fixedTopGap="56">
-      <mat-nav-list>
-        <a mat-list-item>Peers</a>
-        <mat-divider></mat-divider>
-        <a mat-list-item>Tunnel routing</a>
-      </mat-nav-list>
-    </mat-sidenav>
-
-    <mat-sidenav-content>
-      <h1 class="title">
-        {{ "PAGES.HOME.TITLE" | translate }}
-      </h1>
-      <div class="config">
-        {{ configService.yggdrasilConfig$ | async | json }}
-      </div>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+  <mat-nav-list>
+    <a mat-list-item routerLink="/config">Config</a>
+  </mat-nav-list>
 </div>
