@@ -20,7 +20,8 @@
   },
   "include": [
     "main.ts",
-    "src/**/*"
+    "src/**/*",
+    "electron_app/**/*"
   ],
   "exclude": [
     "node_modules"

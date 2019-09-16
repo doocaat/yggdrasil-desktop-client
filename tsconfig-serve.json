@@ -17,7 +17,8 @@
     ]
   },
   "include": [
-    "main.ts"
+    "main.ts",
+    "electron_app/**/*"
   ],
   "exclude": [
     "node_modules",

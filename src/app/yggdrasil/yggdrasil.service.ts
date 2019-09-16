@@ -3,8 +3,6 @@ import { Observable, of, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ElectronService } from '../core/services';
 import { YggdrasilConfig } from '../config/type/yggdrasil.config';
-import * as sudo from 'sudo-prompt';
-import * as rootFs from '@mh-cbon/sudo-fs';
 
 @Injectable({
   providedIn: 'root'
