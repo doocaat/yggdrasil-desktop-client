@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {PrettySizeModule} from 'angular-pretty-size';
 import {
   MatDividerModule,
   MatToolbarModule,
@@ -10,17 +11,24 @@ import {
   MatFormFieldModule,
   MatOptionModule,
   MatSelectModule,
-  MatInputModule
+  MatInputModule,
+  MatExpansionModule,
+  MatDialogModule,
+  MatTooltipModule,
+  MatCardModule,
+  MatMenuModule
 } from '@angular/material';
 
 import { TranslateModule } from '@ngx-translate/core';
 
 import { PageNotFoundComponent } from './components/';
 import { WebviewDirective } from './directives/';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { DurationPipe } from './pipes/moment/duration.pipe';
+import { RoundPipe } from './pipes/number/round.pipe';
 
 @NgModule({
-  declarations: [PageNotFoundComponent, WebviewDirective],
+  declarations: [PageNotFoundComponent, WebviewDirective, DurationPipe, RoundPipe],
   imports: [
     CommonModule,
     TranslateModule,
@@ -34,7 +42,15 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatOptionModule,
     MatSelectModule,
     MatInputModule,
-    ReactiveFormsModule
+    MatExpansionModule,
+    MatDialogModule,
+    MatTooltipModule,
+    MatMenuModule,
+    MatCardModule,
+    ReactiveFormsModule,
+    FormsModule,
+    // @ts-ignore
+    PrettySizeModule,
   ],
   exports: [
     TranslateModule,
@@ -49,7 +65,17 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatOptionModule,
     MatSelectModule,
     MatInputModule,
-    ReactiveFormsModule
+    MatExpansionModule,
+    MatDialogModule,
+    MatTooltipModule,
+    MatMenuModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    FormsModule,
+    // @ts-ignore
+    PrettySizeModule,
+    DurationPipe,
+    RoundPipe
   ]
 })
 export class SharedModule {}

@@ -11,7 +11,7 @@ export class ConfigComponent implements OnInit {
   constructor(public configService: ConfigService) { }
 
   ngOnInit() {
-    this.configService.loadYggdrasilConfig();
+   // this.configService.loadYggdrasilConfig();
   }
 
 }

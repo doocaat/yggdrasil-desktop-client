@@ -9,9 +9,7 @@
   "keywords": [
     "yggdrasil",
     "end-to-end",
-    "network",
-    "typescript",
-    "sass"
+    "network"
   ],
   "main": "main.js",
   "private": true,
@@ -87,7 +85,11 @@
     "@angular/animations": "^8.2.6",
     "@angular/cdk": "^8.2.0",
     "@angular/material": "^8.2.0",
+    "angular-pretty-size": "0.0.3",
     "class-transformer": "^0.2.3",
-    "reflect-metadata": "^0.1.13"
+    "moment": "^2.24.0",
+    "moment-duration-format": "^2.3.2",
+    "reflect-metadata": "^0.1.13",
+    "sudo-prompt": "^9.0.0"
   }
 }

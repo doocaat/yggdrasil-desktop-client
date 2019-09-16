@@ -1,0 +1,74 @@
+.peer-panel {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr 1fr;
+  .info {
+    justify-self: end;
+    display: grid;
+    grid-template-columns: minmax(150px, 100%) repeat(2, minmax(90px, 100%));
+    grid-column-gap: 5px;
+    .item {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      grid-column-gap: 5px;
+    }
+  }
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 4vh;
+  .connected-peers {
+    max-width: 70vw;
+    .peer {
+      .info {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        grid-gap: 2vh;
+      }
+
+      .actions {
+        padding-top: 4vh;
+        button {
+          margin-right: 16px;
+        }
+      }
+
+      .title {
+        font-weight: 700;
+      }
+    }
+  }
+
+  .list-peers {
+    max-width: 30vw;
+    .peer {
+      .info {
+        display: grid;
+        grid-template-columns: 30px 1fr 40px;
+        .status {
+          mat-icon {
+            line-height: 40px;
+          }
+
+          mat-icon.connected {
+            color: green;
+          }
+        }
+        .endpoint {
+          line-height: 40px;
+        }
+      }
+    }
+  }
+
+  .title {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    button {
+      justify-self: end;
+      align-self: center;
+    }
+  }
+}

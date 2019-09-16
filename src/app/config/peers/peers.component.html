@@ -1,9 +1,125 @@
 <div class="container">
-  <h3>Peers</h3>
-  <button mat-button (click)="addPeer('')">Add</button>
-  <div *ngFor="let peer of peers.controls; let i = index">
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="Peer address" [formControlName]="i" />
-    </mat-form-field>
+  <div class="connected-peers">
+    <div class="title">
+      <h1>Peer connections</h1>
+      <button mat-raised-button (click)="openConnectedPeerDialog()" color="primary">
+        {{ "Connect" | uppercase }}
+      </button>
+    </div>
+    <mat-accordion>
+      <mat-expansion-panel
+        *ngFor="let peer of peerList | keyvalue; trackBy: trackByFn"
+        [expanded]="!!openedPeer && openedPeer === peer.key"
+        (opened)="openPeer(peer.key)"
+        (closed)="closePeer()"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title class="peer-panel">
+            <div class="uri">{{ peer.value.endpoint }}</div>
+            <div class="info">
+              <div class="item" matTooltip="Uptime">
+                <mat-icon>av_timer</mat-icon>
+                {{ peer.value.uptime | durationHumanize }}
+              </div>
+              <div class="item" matTooltip="Sended">
+                <mat-icon>arrow_upward</mat-icon>
+                {{ peer.value.bytes_sent | nxtPrettySize }}
+              </div>
+              <div class="item" matTooltip="Received">
+                <mat-icon>arrow_downward</mat-icon>
+                {{ peer.value.bytes_recvd | nxtPrettySize }}
+              </div>
+            </div>
+          </mat-panel-title>
+          <mat-panel-description> </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="peer">
+          <div class="info">
+              <div class="title">URI</div>
+              <div class="body">{{ peer.value.endpoint }}</div>
+
+            <div class="title">IP address</div>
+            <div class="body">{{ peer.key }}</div>
+
+            <div class="title">Public key</div>
+            <div class="body">{{ peer.value.box_pub_key }}</div>
+
+            <div class="title">Port</div>
+            <div class="body">{{ peer.value.port }}</div>
+
+            <div class="title">Protocol</div>
+            <div class="body">{{ peer.value.proto }}</div>
+
+            <div class="title">Sended</div>
+            <div class="body">{{ peer.value.bytes_sent }} bytes</div>
+
+            <div class="title">Received</div>
+            <div class="body">{{ peer.value.bytes_recvd }} bytes</div>
+
+            <div class="title">Uptime</div>
+            <div class="body">{{ peer.value.uptime | round }} seconds</div>
+          </div>
+          <div class="actions">
+              <button
+              mat-raised-button
+              color="primary"
+              [disabled]="peer.value.endpoint === peerSelf || isEndpointPeerList(peer.value.endpoint)"
+              (click)="addPeerToList(peer.value.endpoint)"
+            >
+              {{ "Add to list" | uppercase }}
+            </button>
+            <button
+              mat-stroked-button
+              color="warn"
+              [disabled]="peer.value.endpoint === peerSelf"
+              (click)="disconnectPeer(peer.value.endpoint)"
+            >
+              {{ "Disconnect" | uppercase }}
+            </button>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div class="list-peers">
+    <div class="title">
+      <h1>Peer list</h1>
+      <button mat-raised-button (click)="openAddPeerDialog()" color="primary">
+        {{ "Create" | uppercase }}
+      </button>
+    </div>
+
+    <mat-card>
+        <div
+          *ngFor="let peer of (configService.yggdrasilConfig$ | async)?.Peers"
+          role="listitem"
+          class="peer"
+        >
+          <div class="info">
+            <div class="status">
+              <mat-icon [class.connected]="isPeerConnected(peer)" [matTooltip]="isPeerConnected(peer) ? 'Connected' : 'Disconnected'">compare_arrows</mat-icon>
+            </div>
+            <div class="endpoint">
+              {{ peer }}
+            </div>
+
+            <div class="actions">
+              <button
+                mat-icon-button
+                aria-label="Connect"
+                [matMenuTriggerFor]="peerMenu"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #peerMenu="matMenu">
+                  <button mat-menu-item *ngIf="isPeerConnected(peer)" (click)="disconnectPeer(peer)" color="accept">Disconnect</button>
+                  <button mat-menu-item *ngIf="!isPeerConnected(peer)" (click)="yggdrasilService.addPeer(peer)">Connect</button>
+                  <button mat-menu-item (click)="deletePeer(peer)">Delete</button>
+                </mat-menu>
+            </div>
+          </div>
+        </div>
+    </mat-card>
   </div>
 </div>
