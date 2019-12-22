@@ -19,6 +19,7 @@ import { HomeModule } from './home/home.module';
 
 import { AppComponent } from './app.component';
 import { ConfigModule } from './config/config.module';
+import { AdminModule } from './admin/admin.module';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -36,6 +37,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     SharedModule,
     HomeModule,
     ConfigModule,
+    AdminModule,
     AppRoutingModule,
     TranslateModule.forRoot({
       loader: {
