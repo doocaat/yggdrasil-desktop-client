@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "sourceMap": false,
+    "outDir": "./dist",
+    "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
@@ -20,7 +21,7 @@
   },
   "include": [
     "main.ts",
-    "electron_app/**/*"
+    "app/**/*"
   ],
   "exclude": [
     "node_modules",

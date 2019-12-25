@@ -1,10 +1,10 @@
 import { app, ipcMain } from 'electron';
 
-import { di } from './electron_app/di/container.di';
-import { WindowService } from './electron_app/window/interfaces/window.service';
-import { CONFIG_DI } from './electron_app/di/config.di';
-import { TrayService } from './electron_app/window/interfaces/tray.service';
-import { FsService } from './electron_app/common/fs.service';
+import { di } from './app/di/container.di';
+import { WindowService } from './app/window/interfaces/window.service';
+import { CONFIG_DI } from './app/di/config.di';
+import { TrayService } from './app/window/interfaces/tray.service';
+import { FsService } from './app/common/fs.service';
 
 try {
 

@@ -28,12 +28,12 @@ export class ElectronWindowService implements WindowService {
   getWindowUrl(): string {
     if (this.serve) {
       require('electron-reload')(__dirname, {
-        electron: require(`${__dirname}/../../node_modules/electron`)
+        electron: require(`${__dirname}/../../../node_modules/electron`)
       });
       return 'http://localhost:4200';
     } else {
       return url.format({
-        pathname: path.join(__dirname, '../dist/index.html'),
+        pathname: path.join(__dirname, '/../../dist/index.html'),
         protocol: 'file:',
         slashes: true
       });

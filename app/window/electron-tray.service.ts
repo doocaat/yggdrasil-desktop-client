@@ -28,9 +28,7 @@ export class ElectronTrayService implements TrayService {
             return;
         }
 
-        const trayIconPath = path.join(
-            __dirname,
-            `../../src/assets/tray/connected.png`
+        const trayIconPath = path.join(`${__dirname}/../../ui/assets/tray/connected.png`
           );
 
           const trayIconImage = nativeImage.createFromPath(trayIconPath);
