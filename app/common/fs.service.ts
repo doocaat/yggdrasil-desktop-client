@@ -1,18 +1,14 @@
 import * as sudo from 'sudo-prompt';
 import * as fs from 'fs';
-import { injectable } from 'inversify';
-import { WindowService } from '../window/interfaces/window.service';
-import { di } from '../di/container.di';
-import { CONFIG_DI } from '../di/config.di';
-import { remote, BrowserWindow } from 'electron';
+import { BrowserWindow } from 'electron';
+import { provide } from 'inversify-binding-decorators';
 
-@injectable()
+@provide(FsService)
 export class FsService {
 
   moveFileSudo(arg) {
     const options = {
       name: arg.actionTitle,
-      icns: `${__dirname}/../../src/assets/tray/connected.png`
     };
 
     fs.writeFile(arg.tmpFilePath, arg.data, error => {

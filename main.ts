@@ -1,16 +1,14 @@
 import { app, ipcMain } from 'electron';
-
 import { di } from './app/di/container.di';
-import { WindowService } from './app/window/interfaces/window.service';
-import { CONFIG_DI } from './app/di/config.di';
-import { TrayService } from './app/window/interfaces/tray.service';
 import { FsService } from './app/common/fs.service';
+import {WindowService} from './app/common/window.service';
+import {TrayService} from './app/common/tray.service';
 
 try {
 
-  const windowService = di.get<WindowService>(CONFIG_DI.WindowService);
-  const trayService = di.get<TrayService>(CONFIG_DI.TrayService);
-  const fsService = di.get<FsService>(CONFIG_DI.FsService);
+  const windowService = di.get<WindowService>(WindowService);
+  const trayService = di.get<TrayService>(TrayService);
+  const fsService = di.get<FsService>(FsService);
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.

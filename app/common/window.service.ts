@@ -1,13 +1,11 @@
 import { injectable } from 'inversify';
-import { WindowService } from './interfaces/window.service';
 import * as url from 'url';
 import * as path from 'path';
-import {
-  BrowserWindow,
-  screen} from 'electron';
+import { BrowserWindow, screen } from 'electron';
+import { provide } from 'inversify-binding-decorators';
 
-@injectable()
-export class ElectronWindowService implements WindowService {
+@provide(WindowService)
+export class WindowService {
   private serve;
 
   window: BrowserWindow = null;
@@ -17,12 +15,11 @@ export class ElectronWindowService implements WindowService {
     this.serve = args.some(val => val === '--serve');
   }
 
-  openWindow(windowUrl: string = ''): void {
-    if (this.window === null) {
-      this.createWindow();
+  openWindow(windowUrl: string = '', isShow = true): void {
+    if (!this.window || this.window.isDestroyed) {
+      this.createWindow(isShow);
     }
     this.window.loadURL(this.getWindowUrl() + windowUrl);
-    this.window.show();
   }
 
   getWindowUrl(): string {
@@ -33,23 +30,29 @@ export class ElectronWindowService implements WindowService {
       return 'http://localhost:4200';
     } else {
       return url.format({
-        pathname: path.join(__dirname, '/../../dist/index.html'),
+        pathname: path.join(__dirname, '/../../dist/ui/index.html'),
         protocol: 'file:',
         slashes: true
       });
     }
   }
 
-  closeWindow() {
-      this.window.hide();
+  closeWindow(destroy = false) {
+    if (!this.window || this.window.isDestroyed) {
+      return;
+    }
+
+    this.window.hide();
+
+    if (destroy) {
       this.window.destroy();
       this.window = null;
+    }
   }
 
-  createWindow() {
-
-    if (this.window !== null) {
-        return;
+  createWindow(show = false) {
+    if (this.window && !this.window.isDestroyed) {
+      this.closeWindow(true);
     }
 
     const electronScreen = screen;
@@ -65,7 +68,7 @@ export class ElectronWindowService implements WindowService {
         sandbox: false,
         webSecurity: false
       },
-      show: false
+      show: show
     });
     if (this.serve) {
       this.window.webContents.openDevTools();

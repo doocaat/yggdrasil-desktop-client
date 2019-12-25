@@ -89,6 +89,7 @@
     "class-transformer": "^0.2.3",
     "electron-json-config": "^1.5.3",
     "inversify": "^5.0.1",
+    "inversify-binding-decorators": "^4.0.0",
     "moment": "^2.24.0",
     "moment-duration-format": "^2.3.2",
     "reflect-metadata": "^0.1.13",
