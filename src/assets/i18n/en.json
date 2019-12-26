@@ -3,5 +3,12 @@
       "HOME": {
           "TITLE": "App works !"
       }
+  },
+  "setting": {
+    "title": "Settings",
+    "language": {
+      "title": "Language",
+      "hint": "Language for application"
+    }
   }
 }

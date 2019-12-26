@@ -1,5 +1,5 @@
 import { YggdrasilService } from './../yggdrasil/yggdrasil.service';
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { ElectronService } from '../core/services';
 import { Config } from './type/config';
 import { YggdrasilConfig } from './type/yggdrasil.config';
@@ -15,7 +15,8 @@ export class ConfigService {
 
   constructor(
     private electronService: ElectronService,
-    private yggdrasilService: YggdrasilService
+    private yggdrasilService: YggdrasilService,
+    private zone: NgZone,
   ) {
     this.init();
   }
@@ -31,13 +32,15 @@ export class ConfigService {
       this.loadYggdrasilConfig();
     });
 
-    this.electronService.ipcRenderer.on('config', (event, args) => {
-      this.configApp.next(args);
+    this.electronService.ipcRenderer.on('setting', (event, args) => {
+      this.zone.run(() => {
+        this.configApp.next(args);
+      });
     });
   }
 
   loadConfig() {
-    this.electronService.ipcRenderer.send('getConfig');
+    this.electronService.ipcRenderer.send('getSetting');
   }
 
   get config(): Config {

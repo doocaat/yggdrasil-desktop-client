@@ -1,29 +1,27 @@
 <div class="container">
   <mat-spinner
-    *ngIf="!(configService.configApp | async)"
+    *ngIf="!setting"
     class="spinner"
   ></mat-spinner>
-  <div class="setting" *ngIf="(configService.configApp | async) !== null">
+  <form class="setting" [formGroup]="settingForm" *ngIf="setting !== null">
     <div class="title">
-      <h1>Settings</h1>
+    <h1>{{ 'setting.title' | translate }}</h1>
     </div>
     <div class="options">
       <div class="language option">
-        <h2>Language</h2>
+        <h2>{{ 'setting.language.title' | translate }}</h2>
         <mat-form-field>
-          <mat-label>Language</mat-label>
-          <mat-select [value]="(configService.configApp | async).language">
+          <mat-label>{{ 'setting.language.hint' | translate }}</mat-label>
+          <mat-select formControlName="language">
             <mat-option
               *ngFor="
-                let language of (configService.configApp | async)
-                  .availableLanguage
+                let language of setting.availableLanguage
               "
               [value]="language.code"
             >
               {{ language.name }}
             </mat-option>
           </mat-select>
-          <mat-hint>Application language</mat-hint>
         </mat-form-field>
       </div>
       <div class="config option">
@@ -32,7 +30,7 @@
           <input
             matInput
             placeholder="Yggdrasil config path"
-            [value]="(configService.configApp | async)?.configPath"
+            formControlName="configPath"
           />
         </mat-form-field>
       </div>
@@ -42,7 +40,7 @@
           <input
             matInput
             placeholder="Yggdrasil path"
-            [value]="(configService.configApp | async)?.yggdrasilBinPath"
+            formControlName="yggdrasilBinPath"
           />
         </mat-form-field>
 
@@ -50,14 +48,14 @@
           <input
             matInput
             placeholder="Yggdrasil yggdrasilctl path"
-            [value]="(configService.configApp | async)?.yggdrasilCtlBinPath"
+            formControlName="yggdrasilCtlBinPath"
           />
         </mat-form-field>
       </div>
     </div>
     <div class="actions">
-      <button mat-raised-button color="primary">Save</button>
+      <button mat-raised-button color="primary" (click)="saveConfig()">Save</button>
       <button mat-stroked-button>Reset</button>
     </div>
-  </div>
+  </form>
 </div>

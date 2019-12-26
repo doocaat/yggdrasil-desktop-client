@@ -8,7 +8,7 @@ export interface LanguageItem {
     address: string;
   }
 
-  export interface Config {
+  export interface Setting {
       configPath: string;
       peerAddressList: PeerAddressItem[];
       peerAddress: string;
@@ -16,4 +16,13 @@ export interface LanguageItem {
       yggdrasilCtlBinPath: string;
       language: string;
       availableLanguage: LanguageItem[];
+  }
+
+  export enum SettingConfigKey {
+    peerAddressList = 'peerAddressList',
+    peerAddress = 'peerAddress',
+    language = 'language',
+    configPath = 'configPath',
+    yggdrasilPath = 'yggdrasilPath',
+    yggdrasilAdminPath = 'yggdrasilAdminPath'
   }

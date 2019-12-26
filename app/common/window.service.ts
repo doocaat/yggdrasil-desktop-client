@@ -22,6 +22,14 @@ export class WindowService {
     this.window.loadURL(this.getWindowUrl() + windowUrl);
   }
 
+  sendAllWindow(channel: string, data?: any) {
+    BrowserWindow.getAllWindows()
+    //.filter(window => !window.isDestroyed)
+    .forEach(window => {
+      window.webContents.send(channel, data);
+    });
+  }
+
   getWindowUrl(): string {
     if (this.serve) {
       require('electron-reload')(__dirname, {

@@ -18,7 +18,7 @@ import {
   MatCardModule,
   MatMenuModule,
   MatProgressSpinnerModule,
-  MatProgressBarModule
+  MatProgressBarModule,
 } from '@angular/material';
 
 import { TranslateModule } from '@ngx-translate/core';

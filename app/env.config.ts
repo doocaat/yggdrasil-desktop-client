@@ -13,4 +13,5 @@ export class EnvConfig {
         }
     ];
     defaultLanguage = 'en';
+    peerAddress: 'tcp://localhost:9091';
 }

@@ -1,0 +1,15 @@
+{
+    "PAGES": {
+        "HOME": {
+            "TITLE": "App works !"
+        }
+    },
+    "setting": {
+      "title": "Настройки",
+      "language": {
+        "title": "Язык приложения",
+        "hint": "Перевода приложения"
+      }
+    }
+  }
+  
