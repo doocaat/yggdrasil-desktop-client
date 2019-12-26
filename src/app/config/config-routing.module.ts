@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ConfigComponent } from './config.component';
 import { PeersComponent } from './peers/peers.component';
 import { InfoComponent } from './info/info.component';
+import { MainComponent } from './main/main.component';
 
 const routes: Routes = [
   {
@@ -12,8 +13,12 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'info',
+        redirectTo: 'main',
         pathMatch: 'full'
+      },
+      {
+        path: 'main',
+        component: MainComponent
       },
       {
         path: 'info',

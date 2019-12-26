@@ -3,6 +3,7 @@ import { di } from './app/di/container.di';
 import { FsService } from './app/common/fs.service';
 import {WindowService} from './app/common/window.service';
 import {TrayService} from './app/common/tray.service';
+import './app/bootstrap';
 
 try {
 

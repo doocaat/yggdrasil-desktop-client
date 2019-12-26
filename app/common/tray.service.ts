@@ -26,13 +26,13 @@ export class TrayService {
       {
         label: 'Config',
         click: () => {
-          this.windowService.openWindow('#/config/info');
+          this.windowService.openWindow('#/config/main');
         }
       },
       {
         label: 'Admin',
         click: () => {
-          this.windowService.openWindow('#/config/info');
+          this.windowService.openWindow('#/admin/main');
         }
       },
       {

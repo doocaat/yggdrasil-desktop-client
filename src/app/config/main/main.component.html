@@ -1,0 +1,34 @@
+<div class="container">
+
+    <h1>Peer address list for admin api</h1>
+    <mat-selection-list *ngIf="(configService.configApp | async) !== null" #peerAddressListElement>
+        <mat-list-option *ngFor="let peerAddress of (configService.configApp | async).peerAddressList">
+          
+            <mat-icon matListIcon>computer</mat-icon>
+            <h3 matLine> {{peerAddress.name}}  </h3>
+            <p matLine>
+            <span>{{peerAddress.address}} </span>
+            </p>
+        </mat-list-option>
+    </mat-selection-list>
+
+    <h1>Config path list</h1>
+    <mat-selection-list *ngIf="(configService.configApp | async) !== null" #configPathListElement>
+        <mat-list-option *ngFor="let configPath of (configService.configApp | async).configPathList">
+            <mat-icon matListIcon>build</mat-icon>
+            <h3 matLine> {{configPath.name}}  </h3>
+            <p matLine>
+            <span>{{configPath.path}} </span>
+            </p>
+        </mat-list-option>
+    </mat-selection-list>
+
+    <mat-form-field>
+      <input matInput placeholder="Yggdrasil path" [value]="(configService.configApp | async)?.yggdrasilBinPath">
+    </mat-form-field>
+  
+    <mat-form-field>
+      <textarea matInput placeholder="Yggdrasil yggdrasilctl path" [value]="(configService.configApp | async)?.yggdrasilCtlBinPath"></textarea>
+    </mat-form-field>
+
+  </div>

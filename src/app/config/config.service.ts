@@ -11,6 +11,7 @@ import { from, BehaviorSubject, Observable } from 'rxjs';
 })
 export class ConfigService {
   private _yggdrasilConfig$ = new BehaviorSubject(null);
+  configApp = new BehaviorSubject(null);
 
   constructor(
     private electronService: ElectronService,
@@ -29,6 +30,14 @@ export class ConfigService {
     this.electronService.ipcRenderer.on('updateYggdrasilConfig', (event, args) => {
       this.loadYggdrasilConfig();
     });
+
+    this.electronService.ipcRenderer.on('config', (event, args) => {
+      this.configApp.next(args);
+    });
+  }
+
+  loadConfig() {
+    this.electronService.ipcRenderer.send('getConfig');
   }
 
   get config(): Config {
