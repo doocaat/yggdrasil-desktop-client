@@ -2,22 +2,30 @@ import { provide } from 'inversify-binding-decorators';
 import * as jsonConfig from 'electron-json-config';
 import * as os from 'os';
 import { app, ipcMain, BrowserWindow } from 'electron';
-import { PeerAddressItem, ConfigPathItem, Config } from './types';
+import { PeerAddressItem, Config, LanguageItem } from './types';
+import { EnvConfig } from '../env.config';
+import { inject } from 'inversify';
 
 @provide(ConfigService)
 export class ConfigService {
-
-    constructor() {
-        this.initHandlers();
-    }
+  constructor(
+    @inject(EnvConfig)
+    private readonly envConfig: EnvConfig
+  ) {
+    this.initHandlers();
+  }
 
   initHandlers() {
     ipcMain.on('getConfig', (event, arg) => {
-      console.log('ELECTRON: ConfigService.getConfig');
-      BrowserWindow.getFocusedWindow().webContents.send(
-        'config',
-        this.getConfig()
-      );
+      let window = BrowserWindow.getFocusedWindow();
+
+      if (!window) {
+        window = BrowserWindow.getAllWindows()[0];
+      }
+
+      if (window) {
+        window.webContents.send('config', this.getConfig());
+      }
     });
   }
 
@@ -37,18 +45,16 @@ export class ConfigService {
   }
 
   getLanguage(): string {
-    return jsonConfig.get('language', 'en');
+    return jsonConfig.get('language', this.envConfig.defaultLanguage);
+  }
+
+  getAvailableLanguage(): LanguageItem[] {
+    return  this.envConfig.availableLanguage;
   }
 
   getPeerAddressList(): PeerAddressItem[] {
     return jsonConfig.get('peerAddressList', [
       { name: 'localhost', address: this.getPeerAddress() }
-    ]);
-  }
-
-  getConfigPathList(): ConfigPathItem[] {
-    return jsonConfig.get('configPathList', [
-      { name: 'default', path: this.getDefaultConfigPath() }
     ]);
   }
 
@@ -66,13 +72,13 @@ export class ConfigService {
 
   getConfig(): Config {
     return {
-      configPathList: this.getConfigPathList(),
       configPath: this.getConfigPath(),
       peerAddressList: this.getPeerAddressList(),
       peerAddress: this.getYggdrasilCtlBinPath(),
       yggdrasilBinPath: this.getYggdrasilBinPath(),
       yggdrasilCtlBinPath: this.getYggdrasilCtlBinPath(),
-      language: this.getLanguage()
+      language: this.getLanguage(),
+      availableLanguage: this.getAvailableLanguage()
     };
   }
 

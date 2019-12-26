@@ -1,6 +1,6 @@
-export interface ConfigPathItem {
+export interface LanguageItem {
     name: string;
-    path: string;
+    code: string;
   }
 
   export interface PeerAddressItem {
@@ -9,11 +9,11 @@ export interface ConfigPathItem {
   }
 
   export interface Config {
-      configPathList: ConfigPathItem[];
       configPath: string;
       peerAddressList: PeerAddressItem[];
       peerAddress: string;
       yggdrasilBinPath: string;
       yggdrasilCtlBinPath: string;
       language: string;
+      availableLanguage: LanguageItem[];
   }
