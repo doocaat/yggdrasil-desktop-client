@@ -18,13 +18,19 @@ export class ConfigService {
   initHandlers() {
     ipcMain.on('getConfig', (event, arg) => {
       let window = BrowserWindow.getFocusedWindow();
-
+      ipcMain.emit('config', this.getConfig());
       if (!window) {
         window = BrowserWindow.getAllWindows()[0];
+
+       
       }
 
       if (window) {
         window.webContents.send('config', this.getConfig());
+      }
+
+      if (!window) {
+        console.error('No found active window');
       }
     });
   }

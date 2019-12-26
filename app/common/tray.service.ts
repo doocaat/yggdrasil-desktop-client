@@ -24,15 +24,21 @@ export class TrayService {
   getMenu(): MenuItemConstructorOptions[] {
     return [
       {
-        label: 'Config',
+        label: 'Admin',
+        click: () => {
+          this.windowService.openWindow('#/admin/main');
+        }
+      },
+      {
+        label: 'Connection config',
         click: () => {
           this.windowService.openWindow('#/config/main');
         }
       },
       {
-        label: 'Admin',
+        label: 'Settings',
         click: () => {
-          this.windowService.openWindow('#/admin/main');
+          this.windowService.openWindow('#/settings/main');
         }
       },
       {

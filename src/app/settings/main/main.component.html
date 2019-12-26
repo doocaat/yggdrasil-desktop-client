@@ -1,0 +1,63 @@
+<div class="container">
+  <mat-spinner
+    *ngIf="!(configService.configApp | async)"
+    class="spinner"
+  ></mat-spinner>
+  <div class="setting" *ngIf="(configService.configApp | async) !== null">
+    <div class="title">
+      <h1>Settings</h1>
+    </div>
+    <div class="options">
+      <div class="language option">
+        <h2>Language</h2>
+        <mat-form-field>
+          <mat-label>Language</mat-label>
+          <mat-select [value]="(configService.configApp | async).language">
+            <mat-option
+              *ngFor="
+                let language of (configService.configApp | async)
+                  .availableLanguage
+              "
+              [value]="language.code"
+            >
+              {{ language.name }}
+            </mat-option>
+          </mat-select>
+          <mat-hint>Application language</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="config option">
+        <h2>Config path</h2>
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Yggdrasil config path"
+            [value]="(configService.configApp | async)?.configPath"
+          />
+        </mat-form-field>
+      </div>
+      <div class="binary option">
+        <h2>Yggdrasil binary file paths</h2>
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Yggdrasil path"
+            [value]="(configService.configApp | async)?.yggdrasilBinPath"
+          />
+        </mat-form-field>
+
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Yggdrasil yggdrasilctl path"
+            [value]="(configService.configApp | async)?.yggdrasilCtlBinPath"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="actions">
+      <button mat-raised-button color="primary">Save</button>
+      <button mat-stroked-button>Reset</button>
+    </div>
+  </div>
+</div>

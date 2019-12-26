@@ -1,0 +1,27 @@
+.container {
+    display: grid;
+    width: 500px;
+    margin: 20px;
+
+    .setting {
+        .options {
+            display: grid;
+            grid-gap: 10px;
+            .option {
+               display: grid;
+              }
+        }
+        .actions {
+            display: grid;
+            padding-top: 20px;
+            grid-template-columns: auto 1fr;
+            grid-column-gap: 20px;
+            justify-items: start;
+        }
+    }
+
+   
+  }
+
+
+

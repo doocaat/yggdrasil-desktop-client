@@ -8,13 +8,9 @@ import { ConfigService } from '../config.service';
 })
 export class MainComponent implements OnInit {
 
-  peerAddressList = [];
-  configPathList = [];
-
-  constructor(public configService: ConfigService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.configService.loadConfig();
   }
 
 }

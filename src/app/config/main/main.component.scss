@@ -1,8 +1,4 @@
 .container {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .container > * {
-    width: 100%;
-  }
+  display: grid;
+  max-width: 500px;
+}

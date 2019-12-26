@@ -2,7 +2,7 @@ import { provide } from 'inversify-binding-decorators';
 
 @provide(EnvConfig)
 export class EnvConfig {
-    availableLanguage: [
+    availableLanguage = [
         {
             name: 'English',
             code: 'en',
@@ -12,5 +12,5 @@ export class EnvConfig {
             code: 'ru',
         }
     ];
-    defaultLanguage: 'en';
+    defaultLanguage = 'en';
 }
