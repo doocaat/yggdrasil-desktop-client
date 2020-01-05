@@ -1,0 +1,59 @@
+<div class="root">
+  <div class="toolbar">
+    <div class="tools">
+      <button
+        mat-icon-button
+        color="primary"
+        (click)="backView()"
+        aria-label="Example icon-button with a heart icon"
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        color="primary"
+        (click)="forwardView()"
+        aria-label="Example icon-button with a heart icon"
+      >
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        color="primary"
+        (click)="reloadView()"
+        aria-label="Example icon-button with a heart icon"
+      >
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+    <div class="url">
+      <input
+        class="urlInput"
+        placeholder="Address"
+        [(ngModel)]="input"
+        (keydown.enter)="toToUrl()"
+      />
+    </div>
+    <div class="ext">
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="browserMenu"
+        color="primary"
+        aria-label="Example icon-button with a heart icon"
+      >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #browserMenu="matMenu">
+        <button mat-menu-item (click)="openDevTool()">Developer tools</button>
+      </mat-menu>
+    </div>
+  </div>
+  <div class="render">
+    <webview
+      class="webview"
+      #webview
+      *ngIf="iFrameUrl"
+      attr.src="{{ iFrameUrl }}"
+    ></webview>
+  </div>
+</div>

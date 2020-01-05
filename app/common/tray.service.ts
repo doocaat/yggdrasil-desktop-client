@@ -24,6 +24,12 @@ export class TrayService {
   getMenu(): MenuItemConstructorOptions[] {
     return [
       {
+        label: 'Browser',
+        click: () => {
+          this.windowService.openBrowserWindow('#/browser/web');
+        }
+      },
+      {
         label: 'Admin',
         click: () => {
           this.windowService.openWindow('#/admin/main');

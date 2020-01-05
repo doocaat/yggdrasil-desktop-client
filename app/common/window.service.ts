@@ -22,9 +22,36 @@ export class WindowService {
     this.window.loadURL(this.getWindowUrl() + windowUrl);
   }
 
+  openBrowserWindow(windowUrl: string = '', isShow = true): void {
+    const electronScreen = screen;
+    const size = electronScreen.getPrimaryDisplay().workAreaSize;
+
+    const window = new BrowserWindow({
+      x: 0,
+      y: 0,
+      width: size.width,
+      height: size.height,
+      frame: true,
+      backgroundColor: '#E6E6E6',
+      webPreferences: {
+        nodeIntegration: true,
+        sandbox: false,
+        webSecurity: false,
+        webviewTag: true,
+      },
+      show: isShow,
+    });
+
+    const proxyConf = {proxyRules: 'localhost:8080'};
+
+    window.webContents.session.setProxy(proxyConf as any, () => {
+      window.loadURL(this.getWindowUrl() + windowUrl);
+      return true;
+    });
+  }
+
   sendAllWindow(channel: string, data?: any) {
     BrowserWindow.getAllWindows()
-    //.filter(window => !window.isDestroyed)
     .forEach(window => {
       window.webContents.send(channel, data);
     });

@@ -4,19 +4,25 @@ import { FsService } from './app/common/fs.service';
 import {WindowService} from './app/common/window.service';
 import {TrayService} from './app/common/tray.service';
 import './app/bootstrap';
+import { ProxyServer } from './app/proxy/proxy.server';
+import { DnsService } from './app/dns/dns.service';
 
 try {
 
   const windowService = di.get<WindowService>(WindowService);
   const trayService = di.get<TrayService>(TrayService);
   const fsService = di.get<FsService>(FsService);
+  const proxyServer = di.get<ProxyServer>(ProxyServer);
+  const dnsService = di.get<DnsService>(DnsService);
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
-  app.on('ready', () => {
+  app.on('ready', async () => {
 
     windowService.createWindow();
     trayService.createTray();
+    dnsService.start();
+    await proxyServer.start();
   });
 
   // Quit when all windows are closed.
@@ -24,6 +30,7 @@ try {
     // On OS X it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q
     if (process.platform !== 'darwin') {
+      proxyServer.stop();
       app.quit();
     }
   });
@@ -31,7 +38,7 @@ try {
   ipcMain.on('saveSudoFile', (event, arg) => {
     console.log('saveSudoFile');
 
-    fsService.moveFileSudo(arg);
+    // fsService.moveFileSudo(arg);
   });
 
   app.on('activate', () => {

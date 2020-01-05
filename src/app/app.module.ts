@@ -20,8 +20,8 @@ import { HomeModule } from './home/home.module';
 import { AppComponent } from './app.component';
 import { ConfigModule } from './config/config.module';
 import { AdminModule } from './admin/admin.module';
-import { SettingsComponent } from './settings/settings.component';
 import { SettingsModule } from './settings/settings.module';
+import { BrowserModule as WebBrowserModule } from './browser/browser.module';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -41,6 +41,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ConfigModule,
     AdminModule,
     SettingsModule,
+    WebBrowserModule,
     AppRoutingModule,
     TranslateModule.forRoot({
       loader: {
