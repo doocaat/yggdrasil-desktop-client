@@ -3,19 +3,23 @@ export interface LanguageItem {
     code: string;
   }
 
-  export interface PeerAddressItem {
+  export interface AddressItem {
     name: string;
     address: string;
   }
 
   export interface Setting {
       configPath: string;
-      peerAddressList: PeerAddressItem[];
+      peerAddressList: AddressItem[];
       peerAddress: string;
       yggdrasilBinPath: string;
       yggdrasilCtlBinPath: string;
       language: string;
       availableLanguage: LanguageItem[];
+      proxyHost: string;
+      proxyPort: number;
+      proxyDnsZoneList: string[];
+      dnsServerList: AddressItem[];
   }
 
   export enum SettingConfigKey {
@@ -24,5 +28,9 @@ export interface LanguageItem {
     language = 'language',
     configPath = 'configPath',
     yggdrasilPath = 'yggdrasilPath',
-    yggdrasilAdminPath = 'yggdrasilAdminPath'
+    yggdrasilAdminPath = 'yggdrasilAdminPath',
+    proxyHost = 'proxy.host',
+    proxyPort = 'proxy.port',
+    proxyZones = 'proxy.zones',
+    dnsServerList = 'dns.servers',
   }

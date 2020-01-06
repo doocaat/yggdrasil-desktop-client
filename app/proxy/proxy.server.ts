@@ -1,9 +1,7 @@
 import { provide } from 'inversify-binding-decorators';
-import * as httpProxy from 'http-proxy';
 import * as url from 'url';
-import * as http from 'http';
-import * as io from 'socket.io';
 import { inject } from 'inversify';
+import * as Proxy from 'http-mitm-proxy';
 import { DnsService } from '../dns/dns.service';
 import {
   DomainNameServerConnection,
@@ -11,98 +9,48 @@ import {
   DnsAnswer
 } from './types';
 import { IpUtil } from './ip.util';
+import { IProxy } from 'http-mitm-proxy';
+import { SettingService } from '../common/setting.service';
 
 @provide(ProxyServer)
 export class ProxyServer {
-  private proxy;
-  private wsProxy;
-  private server;
-  private webSocketServer;
+  private proxy: IProxy;
 
-  public port = 8080;
-
-  public host: 'localhost';
-
-  zones = ['.ygg', '.medium', '.ea', '.um', '.hub', '.dns'];
-
-  constructor(@inject(DnsService) private readonly dnsService: DnsService) {}
+  constructor(@inject(DnsService) private readonly dnsService: DnsService,
+              @inject(SettingService) private readonly settingService: SettingService) {}
 
   async start() {
-    if (this.proxy || this.server) {
+    if (this.proxy) {
       this.stop();
     }
 
-    await this.startProxy();
-    await this.startHttpServer();
+    this.proxy = Proxy();
+    const { gunzip, wildcard } = Proxy;
+    this.proxy.use(gunzip);
+    this.proxy.use(wildcard);
+
+    this.subscribeToEvents();
+
+    const proxyOptions = {
+      port: this.settingService.getProxyPort(),
+      host: this.settingService.getProxyHost()
+    };
+
+    this.proxy.listen(proxyOptions, () => {
+      console.log(`proxy: server listen on ${proxyOptions.host}:${proxyOptions.port}`);
+    });
   }
 
   stop() {
     if (this.proxy) {
       this.proxy.close();
+      console.log(`proxy: server stop`);
     }
-
-    if (this.server) {
-      this.server.close();
-    }
-  }
-
-  private async startHttpServer(): Promise<void> {
-    this.server = http.createServer(async (req, res) => {
-      const target = await this.getTarget(req.url);
-      this.proxy.web(req, res, {
-        target,
-        ws: true,
-        changeOrigin: true,
-        hostRewrite: true,
-        autoRewrite: true,
-        protocolRewrite: true,
-        followRedirects: true
-      });
-    });
-
-    this.server.on('request', (req, res) => {
-      console.log('proxy: server request', req.url);
-    });
-
-    this.server.on('connect', async (req, socket, head) => {
-      console.log('proxy: server connection host', req.url);
-      // console.log('proxy: server connection method', req.method);
-      // console.log('proxy: server connection rawHeaders', req.rawHeaders);
-      // console.log('proxy: server connection trailers', req.trailers);
-    });
-
-    this.server.on('upgrade', async (req, socket, head) => {
-      console.log('proxy: connection upgrade to ws: ', req.url);
-      console.log('proxy http headers: ', req.headers);
-      const target = await this.getTarget(req.headers.host + req.url);
-      const targetUrl = url.parse(target);
-      const targetA =
-        'ws://' + targetUrl.host + (targetUrl.port ? targetUrl.port : '');
-      console.log('proxy: ws target: ', targetA);
-      this.proxy.ws(req, socket, head, {
-        target: targetA,
-        ws: true,
-        changeOrigin: true,
-        hostRewrite: true,
-        autoRewrite: true,
-        protocolRewrite: true,
-        followRedirects: true
-      });
-    });
-
-    this.server.on('error', err => {
-      console.warn('proxy: server error', err);
-    });
-
-    console.log(`proxy: listening on port ${this.port}`);
-    this.server.listen(this.port, () => {
-      this.webSocketServer = io.listen(this.server);
-    });
   }
 
   isHostSupportZone(host: string): boolean {
-    const result = this.zones.find(zone => host.endsWith(zone));
-    return !!result ? true : false;
+    const result = this.settingService.getProxyZones().find(zone => host.endsWith(zone));
+    return !!result;
   }
 
   private async getTarget(targetUrl: string) {
@@ -131,64 +79,60 @@ export class ProxyServer {
     }
 
     const target =
-      (!!targetURL.protocol ? targetURL.protocol + '//'  : '') +
+      (!!targetURL.protocol ? targetURL.protocol + '//' : '') +
       targetHost +
       (!!targetURL.port ? ':' + targetURL.port : '');
     console.log(`proxy: target - ${target}`);
     return target;
   }
 
-  private async startProxy() {
-    const options = {
-      // target: {
-      //   host: '127.0.0.1',
-      //   port: 5050
-      // },
-      // target: {
-      //   protocol: 'ws:',
-      //   host: 'localhost',
-      //   port: 5050
-      // },
-      // target: 'ws://127.0.0.1:5050',
-      secure: false,
-      autoRewrite: true,
-      changeOrigin: true,
-      hostRewrite: true,
-      protocolRewrite: true,
-      followRedirects: true,
-      ws: true
-    };
+  private async subscribeToEvents() {
+    this.proxy = Proxy();
+    const { gunzip } = Proxy;
+    this.proxy.use(gunzip);
 
-    this.proxy = httpProxy.createProxyServer(options);
+    this.proxy.onError((ctx, err) => {
+      console.error('error: ', err);
+    });
 
-    // this.proxy.on('upgrade', async (req, socket, head) => {
-    //   console.log('httpProxy: connection upgrade to ws: ', req.url);
-    //   console.log('httpProxy http headers: ', req.headers);
-    //   const target = await this.getTarget(req.headers.host + req.url);
-    //   const targetUrl = url.parse(target);
-    //   const targetA =
-    //     'ws://' + targetUrl.host + (targetUrl.port ? targetUrl.port : '');
-    //   console.log('httpProxy: ws target: ', targetA);
-    //   this.proxy.ws(req, socket, head, {
-    //     target: targetA,
-    //     ws: true,
-    //     changeOrigin: true,
-    //     hostRewrite: true,
-    //     autoRewrite: true,
-    //     protocolRewrite: true,
-    //     followRedirects: true
-    //   });
-    // });
+    this.proxy.onRequest(async (ctx, callback) => {
+      const targetURL =
+        ctx.proxyToServerRequestOptions.agent['protocol'] +
+        '//' +
+        ctx.proxyToServerRequestOptions.headers.host;
+      const target = url.parse(await this.getTarget(targetURL));
 
-    this.proxy.listen(6060);
+      ctx.proxyToServerRequestOptions.host = IpUtil.format(target.host);
+      callback(null);
+    });
+
+    this.proxy.onWebSocketConnection(async (ctx, callback) => {
+
+      const sourceURL =
+      (ctx.isSSL ? 'https:' : 'http:') + '//' + ctx.clientToProxyWebSocket.upgradeReq.headers.host;
+
+      const target = url.parse(await this.getTarget(sourceURL));
+
+      const targetUrl =
+        (ctx.isSSL ? 'wss' : 'ws') +
+        '://' +
+        target.host +
+        (target.port ? ':' + target.port : '') +
+        ctx.clientToProxyWebSocket.upgradeReq.url;
+
+        ctx.clientToProxyWebSocket.upgradeReq.url = targetUrl;
+        ctx['proxyToServerWebSocketOptions'].url = targetUrl;
+        console.log('proxy: websocket connection to url:', targetUrl);
+      return callback();
+    });
   }
 
   private async requestDns(host: string): Promise<DnsAnswer> {
     return this.dnsService.request(host, RequestRecordType.AAAA, {
       connectionType: DomainNameServerConnection.UDP,
-      // host: '303:8b1a::53',
-      host: '202:6603:61f4:a421:a620:33b:d626:4efe',
-      port: 5555
+      // fixme
+      host: this.settingService.getDnsServerList()[0].address,
+      port: 53
     });
   }
 }

@@ -7,7 +7,7 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, NgZone } from 
 })
 export class WebComponent implements OnInit, AfterViewInit {
 
-  iFrameUrl = 'http://[301:b614:c68e:b27f::2]/';
+  iFrameUrl = 'http://mesh.ygg';
 
   input = this.iFrameUrl;
 
@@ -33,7 +33,6 @@ export class WebComponent implements OnInit, AfterViewInit {
 
   toToUrl() {
     this.iFrameUrl = this.input;
-    // webview.loadURL(this.iFrameUrl);
   }
 
   reloadView() {

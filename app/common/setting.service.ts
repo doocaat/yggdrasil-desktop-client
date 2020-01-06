@@ -3,7 +3,7 @@ import * as jsonConfig from 'electron-json-config';
 import * as os from 'os';
 import { app, ipcMain, BrowserWindow } from 'electron';
 import {
-  PeerAddressItem,
+  AddressItem,
   Setting,
   LanguageItem,
   SettingConfigKey
@@ -22,25 +22,30 @@ export class SettingService {
 
   constructor(
     @inject(EnvConfig)
-    private readonly envConfig: EnvConfig,
-    @inject(WindowService)
-    private readonly windowService: WindowService
+    private readonly envConfig: EnvConfig
   ) {
     this.initHandlers();
   }
 
   initHandlers() {
     ipcMain.on('getSetting', (event, arg) => {
-      this.windowService.sendAllWindow('setting', this.getSetting());
+      this.sendAllWindow('setting', this.getSetting());
     });
 
     ipcMain.on('setSetting', (event, arg) => {
       this.setSetting(arg);
-      this.windowService.sendAllWindow('setting', this.getSetting());
+      this.sendAllWindow('setting', this.getSetting());
     });
 
     this._language$.pipe(distinctUntilChanged()).subscribe(lang => {
-      this.windowService.sendAllWindow('language', lang);
+      this.sendAllWindow('language', lang);
+    });
+  }
+
+  sendAllWindow(channel: string, data?: any) {
+    BrowserWindow.getAllWindows()
+    .forEach(window => {
+      window.webContents.send(channel, data);
     });
   }
 
@@ -86,13 +91,13 @@ export class SettingService {
     return this.envConfig.availableLanguage;
   }
 
-  getPeerAddressList(): PeerAddressItem[] {
+  getPeerAddressList(): AddressItem[] {
     return jsonConfig.get(SettingConfigKey.peerAddressList, [
       { name: 'localhost', address: this.getDefaultPeerAddress() }
     ]);
   }
 
-  setPeerAddressList(list: PeerAddressItem[]) {
+  setPeerAddressList(list: AddressItem[]) {
     jsonConfig.get(SettingConfigKey.peerAddressList, list);
   }
 
@@ -124,6 +129,66 @@ export class SettingService {
     jsonConfig.set(SettingConfigKey.yggdrasilAdminPath, path);
   }
 
+  getDefaultProxyHost(): string {
+    return this.envConfig.proxy.host;
+  }
+
+  getProxyHost(): string {
+    return jsonConfig.get(
+      SettingConfigKey.proxyHost,
+      this.getDefaultProxyHost()
+    );
+  }
+
+  setProxyHost(host: string) {
+    jsonConfig.get(SettingConfigKey.proxyHost, host);
+  }
+
+  getDefaultProxyPort(): number {
+    return this.envConfig.proxy.port;
+  }
+
+  getProxyPort(): number {
+    return jsonConfig.get(
+      SettingConfigKey.proxyPort,
+      this.getDefaultProxyPort()
+    );
+  }
+
+  setProxyPort(port: number) {
+    jsonConfig.get(SettingConfigKey.proxyPort, port);
+  }
+
+  getDefaultProxyZones(): string[] {
+    return this.envConfig.proxy.zones;
+  }
+
+  getProxyZones(): string[] {
+    return jsonConfig.get(
+      SettingConfigKey.proxyZones,
+      this.getDefaultProxyZones()
+    );
+  }
+
+  setProxyZones(zones: string[]) {
+    jsonConfig.get(SettingConfigKey.proxyZones, zones);
+  }
+
+  getDefaultDnsServerList(): AddressItem[] {
+    return this.envConfig.dns.servers;
+  }
+
+  getDnsServerList(): AddressItem[] {
+    return jsonConfig.get(
+      SettingConfigKey.dnsServerList,
+      this.getDefaultDnsServerList()
+    );
+  }
+
+  setDnsServerList(dnsServers: AddressItem[]) {
+    jsonConfig.get(SettingConfigKey.dnsServerList, dnsServers);
+  }
+
   getSetting(): Setting {
     return {
       configPath: this.getConfigPath(),
@@ -132,7 +197,11 @@ export class SettingService {
       yggdrasilBinPath: this.getYggdrasilBinPath(),
       yggdrasilCtlBinPath: this.getYggdrasilCtlBinPath(),
       language: this.getLanguage(),
-      availableLanguage: this.getAvailableLanguage()
+      availableLanguage: this.getAvailableLanguage(),
+      proxyHost: this.getProxyHost(),
+      proxyPort: this.getProxyPort(),
+      proxyDnsZoneList: this.getProxyZones(),
+      dnsServerList: this.getDnsServerList(),
     };
   }
 
@@ -143,5 +212,9 @@ export class SettingService {
     this.setYggdrasilCtlBinPath(setting.yggdrasilCtlBinPath);
     this.setPeerAddressList(setting.peerAddressList);
     this.setPeerAddress(setting.peerAddress);
+    this.setProxyZones(setting.proxyDnsZoneList);
+    this.setProxyHost(setting.proxyHost);
+    this.setProxyPort(setting.proxyPort);
+    this.setDnsServerList(setting.dnsServerList);
   }
 }

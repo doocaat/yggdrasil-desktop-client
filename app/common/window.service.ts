@@ -1,8 +1,9 @@
-import { injectable } from 'inversify';
+import { inject } from 'inversify';
 import * as url from 'url';
 import * as path from 'path';
 import { BrowserWindow, screen } from 'electron';
 import { provide } from 'inversify-binding-decorators';
+import { SettingService } from './setting.service';
 
 @provide(WindowService)
 export class WindowService {
@@ -10,7 +11,7 @@ export class WindowService {
 
   window: BrowserWindow = null;
 
-  constructor() {
+  constructor(@inject(SettingService) private readonly settingService: SettingService) {
     const args = process.argv.slice(1);
     this.serve = args.some(val => val === '--serve');
   }
@@ -42,11 +43,12 @@ export class WindowService {
       show: isShow,
     });
 
-    const proxyConf = {proxyRules: 'localhost:8080'};
+    const proxyConf = {
+      proxyRules: `${this.settingService.getProxyHost()}:${this.settingService.getProxyPort()}`
+    };
 
-    window.webContents.session.setProxy(proxyConf as any, () => {
+    window.webContents.session.setProxy(proxyConf as any).then( () => {
       window.loadURL(this.getWindowUrl() + windowUrl);
-      return true;
     });
   }
 
