@@ -4,7 +4,7 @@
 
 # Introduction
 
-(Yggdrasil network)[https://yggdrasil-network.github.io/] desktop client the project with Angular 8 (Material) and Electron (Typescript + SASS + Hot Reload) desktop applications.
+[Yggdrasil network](https://yggdrasil-network.github.io/)desktop client the project with Angular 8 (Material) and Electron (Typescript + SASS + Hot Reload) desktop applications.
 
 # Roadmap
 
