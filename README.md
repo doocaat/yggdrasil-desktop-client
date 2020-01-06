@@ -9,17 +9,17 @@
 # Roadmap
 
 Application modules:
-- [] Web Browser - WPI
-- [] Yggdrasil configurations manager
-- [] Yggdrasil service control
-- [] Remote yggdrasil admin
-- [] Application settings
+- [ ] Web Browser - WPI
+- [ ] Yggdrasil configurations manager
+- [ ] Yggdrasil service control
+- [ ] Remote yggdrasil admin
+- [ ] Application settings
 
 Concept dApps yggdrasil network services:
-- [] Search
-- [] Crypt currency
-- [] Dns service
-- [] Advert
+- [ ] Search
+- [ ] Crypt currency
+- [ ] Dns service
+- [ ] Advert
 
 # Screenshots
 ![peers](/screenshots/peers.png)
