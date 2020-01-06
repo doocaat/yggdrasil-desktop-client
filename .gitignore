@@ -24,6 +24,7 @@ src/**/*.js
 *.sublime-workspace
 /.history
 /.vscode
+/.http-mitm-proxy
 
 # IDE - VSCode
 .vscode/*

@@ -12,9 +12,22 @@ import {
   RequestRecordType,
   DnsAnswer
 } from '../proxy/types';
+import { inject } from 'inversify';
+import { SettingService } from '../common/setting.service';
 
 @provide(DnsService)
 export class DnsService {
+
+  constructor(@inject(SettingService) private readonly settingService: SettingService) {
+  }
+
+  async resolve(domain: string,
+    recordType: RequestRecordType,
+  ): Promise<DnsAnswer> {
+    const dnsServerList = this.settingService.getDnsServerList();
+
+    return Promise.race(dnsServerList.map(server => this.request(domain, recordType, { host: server.address, port: 53 })));
+  }
 
   async request(
     domain: string,
@@ -28,7 +41,7 @@ export class DnsService {
           socket = dgram.createSocket('udp6');
         }
 
-        console.log(`dns: request udp - ${domain} ${recordType}`);
+        console.log(`dns: request - ${domain} ${recordType} on server ${server.host}:${server.port}`);
         const buf = dnsPacket.encode({
           type: 'query',
           id: this.getRandomInt(),
@@ -43,17 +56,17 @@ export class DnsService {
 
         socket.on('message', message => {
           const result = dnsPacket.decode(message);
-          console.log('dns: udp response'); // prints out a response from google dns
+          console.log('dns: response');
           if (!!result && result.rcode === 'NOERROR') {
             const answer = this.findBestAnswer(
               domain,
               result.answers as DnsAnswer[]
             );
-            console.log('dns: result answer:', answer);
+            console.log('dns: result answer:', `${answer.type} ${answer.data}`);
             resolve(answer);
           } else {
-            console.warn('dns: reject:', result);
-            reject(result);
+            console.warn('dns: error:', result);
+            // reject(result);
           }
         });
 

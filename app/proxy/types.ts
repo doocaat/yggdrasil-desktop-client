@@ -1,6 +1,5 @@
 
 export interface DomainNameServer {
-    connectionType: DomainNameServerConnection;
     host: string;
     port: number;
 }

@@ -128,11 +128,6 @@ export class ProxyServer {
   }
 
   private async requestDns(host: string): Promise<DnsAnswer> {
-    return this.dnsService.request(host, RequestRecordType.AAAA, {
-      connectionType: DomainNameServerConnection.UDP,
-      // fixme
-      host: this.settingService.getDnsServerList()[0].address,
-      port: 53
-    });
+    return this.dnsService.resolve(host, RequestRecordType.AAAA);
   }
 }
