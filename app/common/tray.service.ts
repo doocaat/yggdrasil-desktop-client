@@ -32,6 +32,7 @@ export class TrayService {
       showOnAllWorkspaces: true,
       preloadWindow: true,
       browserWindow: {
+        height: 409,
         transparent: true,
         resizable: true,
         webPreferences: {
@@ -41,11 +42,6 @@ export class TrayService {
         }
       },
       index: WindowTools.getUrl() + '#/menubar'
-    });
-
-    this.menuBar.on('after-create-window', () => {
-      const window = this.menuBar.window as any;
-      window.openDevTools();
     });
   }
 }
