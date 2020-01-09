@@ -22,6 +22,7 @@ import { ConfigModule } from './config/config.module';
 import { AdminModule } from './admin/admin.module';
 import { SettingsModule } from './settings/settings.module';
 import { BrowserModule as WebBrowserModule } from './browser/browser.module';
+import { MenubarModule } from './menubar/menubar.module';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -42,6 +43,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AdminModule,
     SettingsModule,
     WebBrowserModule,
+    MenubarModule,
     AppRoutingModule,
     TranslateModule.forRoot({
       loader: {

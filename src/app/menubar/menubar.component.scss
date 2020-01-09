@@ -1,0 +1,90 @@
+.container {
+  display: grid;
+  grid-template-rows: 1fr;
+  background: rgb(252, 252, 252);
+  grid-gap: 16px;
+  padding: 5px;
+
+  .menubar {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    grid-template-rows: 1fr;
+    grid-gap: 10px;
+
+    .service-status {
+      place-self: center;
+      height: 100%;
+      width: 100%;
+      .icon {
+        height: 100%;
+        width: 100%;
+        text-align: center;
+        mat-icon {
+          font-size: 100px;
+          width: auto;
+          height: auto;
+          padding-bottom: 0;
+        }
+
+        &.connected {
+          color: #0b8600;
+        }
+
+        &.disconnected {
+          color: #b8b500;
+        }
+
+        &.stopped {
+          color: #ce0000;
+        }
+      }
+    }
+
+    .service-control {
+      place-self: center;
+      .label-button {
+        display: inline-block;
+        padding: 0 5px;
+      }
+    }
+  }
+}
+
+.application-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+
+    .application {
+        display: grid;
+        grid-template-rows: 75px 1fr;
+        place-items: center;
+        justify-items: center;
+        margin-top: 16px;
+        cursor: pointer;
+
+        mat-icon {
+            font-size: 45px;
+            width: auto;
+            height: auto;
+        }
+
+        .logo {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+        }
+
+        .label {
+           margin-bottom: 16px;
+           text-align: center;
+        }
+    }
+}
+
+.background {
+  background: white;
+}

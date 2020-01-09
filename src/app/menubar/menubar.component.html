@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="menubar background mat-elevation-z2">
+    <div class="service-status">
+      <div
+        class="icon"
+        [class.connected]="group.value === 'started'"
+        [class.stopped]="group.value === 'stopped'"
+      >
+        <mat-icon>eco</mat-icon>
+       
+      </div>
+    </div>
+    <mat-button-toggle-group
+      class="service-control"
+      #group="matButtonToggleGroup"
+    >
+      <mat-button-toggle value="started" aria-label="Start" color="accent">
+        <mat-icon>play_circle_outline</mat-icon><div class="label-button">Start</div>
+      </mat-button-toggle>
+      <mat-button-toggle value="stopped" aria-label="Stop" color="warn">
+        <mat-icon>pause_circle_outline</mat-icon><div class="label-button">Stop</div>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <div class="application-list background mat-elevation-z2">
+
+    <div class="application" (click)="runApplication('webbrowser:create')">
+        <div class="logo" [style.background-image]="'url(assets/icon/Internet-green.png)'"></div>
+        <div class="label">Web Browser</div>
+    </div>
+
+    <div class="application">
+        <div class="logo" [style.background-image]="'url(assets/icon/Rom-Manager.png)'"></div>
+        <div class="label">Admin tools</div>
+    </div>
+
+    <div class="application" (click)="runApplication('config:open')">
+        <div class="logo" [style.background-image]="'url(assets/icon/Appbrain-green.png)'"></div>
+        <div class="label">Connection configuration</div>
+    </div>
+
+    <div class="application" (click)="runApplication('setting:open')">
+        <div class="logo" [style.background-image]="'url(assets/icon/Settingsalt2-green.png)'"></div>
+        <div class="label">Settings</div>
+    </div>
+
+    <div class="application">
+        <div class="logo" [style.background-image]="'url(assets/icon/Bookmarks-green.png)'"></div>
+        <div class="label">Peer book</div>
+    </div>
+  </div>
+</div>

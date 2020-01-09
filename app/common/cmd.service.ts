@@ -1,6 +1,4 @@
 import { provide } from 'inversify-binding-decorators';
-import * as jsonConfig from 'electron-json-config';
-import * as os from 'os';
 import * as childProcess from 'child_process';
 import * as sudo from 'sudo-prompt';
 

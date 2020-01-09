@@ -96,6 +96,7 @@
     "inversify-binding-decorators": "^4.0.0",
     "ip-address": "^6.2.0",
     "material-icons": "^0.3.1",
+    "menubar": "^7.1.0",
     "moment": "^2.24.0",
     "moment-duration-format": "^2.3.2",
     "native-dns": "^0.7.0",

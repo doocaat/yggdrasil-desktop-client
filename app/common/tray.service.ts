@@ -1,111 +1,51 @@
 import { inject } from 'inversify';
 import {
-  app,
-  Tray,
-  Menu,
   nativeImage,
-  MenuItemConstructorOptions,
-  NativeImage
+  NativeImage,
+  App as ElectronApp
 } from 'electron';
 import * as path from 'path';
 import { provide } from 'inversify-binding-decorators';
 import { WindowService } from './window.service';
+import { Menubar } from 'menubar';
+import { WindowTools } from './tools/window.tools';
 
 @provide(TrayService)
 export class TrayService {
-  private tray: Tray;
-  private menu: Menu;
+  private menuBar: Menubar;
 
   constructor(
     @inject(WindowService)
     private readonly windowService: WindowService
   ) {}
 
-  getMenu(): MenuItemConstructorOptions[] {
-    return [
-      {
-        label: 'Browser',
-        click: () => {
-          this.windowService.openBrowserWindow('#/browser/web');
-        }
-      },
-      {
-        label: 'Admin',
-        click: () => {
-          this.windowService.openWindow('#/admin/main');
-        }
-      },
-      {
-        label: 'Connection config',
-        click: () => {
-          this.windowService.openWindow('#/config/main');
-        }
-      },
-      {
-        label: 'Settings',
-        click: () => {
-          this.windowService.openWindow('#/settings/main');
-        }
-      },
-      {
-        label: 'Exit',
-        click: () => {
-          app.quit();
-        }
-      }
-    ];
-  }
-
   getTrayIcon(name: string): NativeImage {
     const iconPath = path.join(`${__dirname}/../../ui/assets/tray/${name}.png`);
     return nativeImage.createFromPath(iconPath);
   }
 
-  createTray(): void {
-    if (!!this.tray) {
-      return;
-    }
-
-    this.menu = Menu.buildFromTemplate(this.getMenu());
-
-    this.tray = new Tray(this.getTrayIcon('connected'));
-    this.tray.setContextMenu(this.menu);
-
-    this.tray.setToolTip('Right Click Icon for Options.');
-    this.tray.setTitle('Title');
-
-    this.tray.on('click', (ev, bounds) => {
-      // Click event bounds
-      const { x, y } = bounds;
-      // Window height & width
-      const { height, width } = this.windowService.getWindow().getBounds();
-
-      if (this.windowService.getWindow().isVisible()) {
-        this.windowService.getWindow().hide();
-      } else {
-        /////////////////////////////////////////////////////////////////////////////////////////////
-        // On Windows I had to parseInt the corrdinates
-        /////////////////////////////////////////////////////////////////////////////////////////////
-        const yPosition = process.platform === 'darwin' ? y : y - height;
-        const xPosition =
-          process.platform === 'darwin' ? x - width / 2 : x - width / 2;
-
-        this.windowService.getWindow().setBounds({
-          x: Math.floor(xPosition),
-          y: Math.floor(yPosition),
-          height,
-          width
-        });
-
-        this.windowService.getWindow().show();
-      }
+  createTray(application: ElectronApp): void {
+    this.menuBar = new Menubar(application, {
+      icon: this.getTrayIcon('connected'),
+      tooltip: 'Yggdrasil',
+      showDockIcon: true,
+      showOnAllWorkspaces: true,
+      preloadWindow: true,
+      browserWindow: {
+        transparent: true,
+        resizable: true,
+        webPreferences: {
+          nodeIntegration: true,
+          sandbox: false,
+          webSecurity: false,
+        }
+      },
+      index: WindowTools.getUrl() + '#/menubar'
     });
-  }
 
-  getTray(): Tray {
-    return this.tray;
-  }
-  getTrayMenu(): Menu {
-    return this.menu;
+    this.menuBar.on('after-create-window', () => {
+      const window = this.menuBar.window as any;
+      window.openDevTools();
+    });
   }
 }

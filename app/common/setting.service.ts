@@ -20,9 +20,13 @@ export class SettingService {
   private _configPath$ = new BehaviorSubject<string>(this.getConfigPath());
   private _peerAddress$ = new BehaviorSubject<string>(this.getPeerAddress());
 
+  private window: BrowserWindow | true;
+
   constructor(
     @inject(EnvConfig)
-    private readonly envConfig: EnvConfig
+    private readonly envConfig: EnvConfig,
+    @inject(WindowService)
+    private readonly windowService: WindowService
   ) {
     this.initHandlers();
   }
@@ -37,8 +41,27 @@ export class SettingService {
       this.sendAllWindow('setting', this.getSetting());
     });
 
+    ipcMain.on('setting:open', (event, arg) => {
+      console.log('setting:open');
+      this.createWindow();
+    });
+
     this._language$.pipe(distinctUntilChanged()).subscribe(lang => {
       this.sendAllWindow('language', lang);
+    });
+
+  }
+
+  createWindow() {
+    if (this.window) {
+      // this.window.show();
+      return;
+    }
+
+    this.window = this.windowService.createWindow('#/settings/main', true, 545, 685);
+
+    this.window.on('close', () => {
+      this.window = null;
     });
   }
 

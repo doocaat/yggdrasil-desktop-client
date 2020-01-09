@@ -17,8 +17,7 @@ try {
   // Some APIs can only be used after this event occurs.
   app.on('ready', async () => {
 
-    windowService.createWindow();
-    trayService.createTray();
+    trayService.createTray(app);
     await proxyServer.start();
   });
 
@@ -41,7 +40,7 @@ try {
   app.on('activate', () => {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    windowService.openWindow();
+    // windowService.openWindow();
 
     // trayService.createTray();
   });

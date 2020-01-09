@@ -19,6 +19,7 @@ import {
   MatMenuModule,
   MatProgressSpinnerModule,
   MatProgressBarModule,
+  MatButtonToggleModule,
 } from '@angular/material';
 
 import { TranslateModule } from '@ngx-translate/core';
@@ -49,6 +50,7 @@ import { RoundPipe } from './pipes/number/round.pipe';
     MatProgressBarModule,
     MatDialogModule,
     MatTooltipModule,
+    MatButtonToggleModule,
     MatMenuModule,
     MatCardModule,
     ReactiveFormsModule,
@@ -74,6 +76,7 @@ import { RoundPipe } from './pipes/number/round.pipe';
     MatProgressBarModule,
     MatDialogModule,
     MatTooltipModule,
+    MatButtonToggleModule,
     MatMenuModule,
     ReactiveFormsModule,
     MatCardModule,
