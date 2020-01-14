@@ -1,7 +1,6 @@
 .container {
   display: grid;
   grid-template-rows: 1fr;
-  background: rgb(252, 252, 252);
   grid-gap: 16px;
   padding: 5px;
 
@@ -27,7 +26,7 @@
         }
 
         &.connected {
-          color: #0b8600;
+          color: #8bc34a;
         }
 
         &.disconnected {
@@ -85,6 +84,4 @@
     }
 }
 
-.background {
-  background: white;
-}
+

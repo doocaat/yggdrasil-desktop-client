@@ -1,0 +1,44 @@
+@import "~@angular/material/theming";
+
+@mixin mat-menubar-theme($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+
+  $drawer-background-color: mat-color($background, dialog);
+  $drawer-container-background-color: mat-color($background, background);
+  $drawer-push-background-color: mat-color($background, dialog);
+  $drawer-side-border: solid 1px mat-color($foreground, divider);
+
+  .component-container {
+    background-color: $drawer-container-background-color;
+    color: mat-color($foreground, text);
+  }
+
+  .component-background {
+    background: $drawer-push-background-color;
+  }
+  .component-font {
+    color: mat-color($foreground, text);
+  }
+}
+
+@mixin mat-menubar-typography($config) {
+  .component-container {
+    font: {
+      family: mat-font-family($config, body-1);
+      size: mat-font-size($config, body-1);
+      weight: mat-font-weight($config, body-1);
+    }
+  }
+
+  .component-font {
+    font: {
+      family: mat-font-family($config, body-1);
+      size: mat-font-size($config, body-1);
+      weight: mat-font-weight($config, body-1);
+    }
+  }
+}
